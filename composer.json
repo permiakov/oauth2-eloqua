@@ -1,0 +1,38 @@
+{
+  "name": "permiakov/oauth2-eloqua",
+  "description": "Eloqua OAuth 2.0 Provider for The PHP League OAuth2-Client",
+  "authors": [
+    {
+      "name": "permiakov",
+      "email": "dn.permyakov@gmail.com",
+      "homepage": "https://github.com/permiakov"
+    }
+  ],
+  "keywords": [
+    "oauth",
+    "oauth2",
+    "client",
+    "authorization",
+    "authorisation",
+    "eloqua"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.0",
+    "league/oauth2-client": "^1.4",
+    "squizlabs/php_codesniffer": ">=2.7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Permiakov\\OAuth2\\Client\\Provider\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Permiakov\\OAuth2\\Client\\Test\\Provider\\": "tests/"
+    }
+  }
+}
