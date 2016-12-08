@@ -2,7 +2,9 @@
 
 namespace Permiakov\OAuth2\Client\Provider;
 
-class EloquaResourceOwner
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+
+class EloquaResourceOwner implements ResourceOwnerInterface
 {
     protected $id;
     protected $userName;
@@ -11,14 +13,33 @@ class EloquaResourceOwner
     protected $lastName;
     protected $emailAddress;
 
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'username' => $this->getUserName(),
+            'displayName' => $this->getDisplayName(),
+            'firstName' => $this->getFirstName(),
+            'lastName' => $this->getLastName(),
+            'emailAddress' => $this->getEmailAddress()
+        );
+    }
+
+    /**
+     * @param $params
+     * @return $this
+     */
     public function exchangeArray($params)
     {
-        $this->setId(isset($params['id']) ?$params['id']: null);
-        $this->setUserName(isset($params['username']) ?$params['username']: null);
-        $this->setDisplayName(isset($params['displayName']) ?$params['displayName']: null);
-        $this->setFirstName(isset($params['firstName']) ?$params['firstName']: null);
-        $this->setLastName(isset($params['lastName']) ?$params['lastName']: null);
-        $this->setEmailAddress(isset($params['emailAddress']) ?$params['emailAddress']: null);
+        $this->setId($params['id']);
+        $this->setUserName($params['username']);
+        $this->setDisplayName($params['displayName']);
+        $this->setFirstName($params['firstName']);
+        $this->setLastName($params['lastName']);
+        $this->setEmailAddress($params['emailAddress']);
 
         return $this;
     }

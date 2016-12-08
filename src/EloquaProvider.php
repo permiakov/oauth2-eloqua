@@ -70,7 +70,7 @@ class EloquaProvider extends AbstractProvider
                     $data['error_description']
                 ),
                 $response->getStatusCode(),
-                $response
+                $response->getBody()
             );
         }
     }

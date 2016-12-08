@@ -93,7 +93,19 @@ class EloquaProviderTest extends TestCase
             $prototype,
             $method->invokeArgs(
                 $provider,
-                array(array('user' => 'something'), new AccessToken(array('access_token' => 'xxx')))
+                array(
+                    array(
+                        'user' => array(
+                            'id' => 123,
+                            'username' => 'login',
+                            'displayName' => 'nickname',
+                            'firstName' => 'name',
+                            'lastName' => 'lastname',
+                            'emailAddress' => 'email'
+                        )
+                    ),
+                    new AccessToken(array('access_token' => 'xxx'))
+                )
             )
         );
     }
