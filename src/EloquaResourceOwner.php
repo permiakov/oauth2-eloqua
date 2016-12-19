@@ -12,6 +12,7 @@ class EloquaResourceOwner implements ResourceOwnerInterface
     protected $firstName;
     protected $lastName;
     protected $emailAddress;
+    protected $siteName;
 
     /**
      * @return array
@@ -19,12 +20,15 @@ class EloquaResourceOwner implements ResourceOwnerInterface
     public function toArray()
     {
         return array(
-            'id' => $this->getId(),
-            'username' => $this->getUserName(),
-            'displayName' => $this->getDisplayName(),
-            'firstName' => $this->getFirstName(),
-            'lastName' => $this->getLastName(),
-            'emailAddress' => $this->getEmailAddress()
+            'user' => array(
+                'id' => $this->getId(),
+                'username' => $this->getUserName(),
+                'displayName' => $this->getDisplayName(),
+                'firstName' => $this->getFirstName(),
+                'lastName' => $this->getLastName(),
+                'emailAddress' => $this->getEmailAddress()
+            ),
+            'site' => array('name' => $this->getSiteName())
         );
     }
 
@@ -34,12 +38,15 @@ class EloquaResourceOwner implements ResourceOwnerInterface
      */
     public function exchangeArray($params)
     {
-        $this->setId($params['id']);
-        $this->setUserName($params['username']);
-        $this->setDisplayName($params['displayName']);
-        $this->setFirstName($params['firstName']);
-        $this->setLastName($params['lastName']);
-        $this->setEmailAddress($params['emailAddress']);
+        $user = $params['user'];
+
+        $this->setId($user['id']);
+        $this->setUserName($user['username']);
+        $this->setDisplayName($user['displayName']);
+        $this->setFirstName($user['firstName']);
+        $this->setLastName($user['lastName']);
+        $this->setEmailAddress($user['emailAddress']);
+        $this->setSiteName($params['site']['name']);
 
         return $this;
     }
@@ -138,5 +145,23 @@ class EloquaResourceOwner implements ResourceOwnerInterface
     public function setEmailAddress($emailAddress)
     {
         $this->emailAddress = $emailAddress;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSiteName()
+    {
+        return $this->siteName;
+    }
+
+    /**
+     * @param mixed $siteName
+     * @return EloquaResourceOwner
+     */
+    public function setSiteName($siteName)
+    {
+        $this->siteName = $siteName;
+        return $this;
     }
 }

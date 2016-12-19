@@ -84,7 +84,7 @@ class EloquaProvider extends AbstractProvider
     {
         $owner = $this->getEloquaResourceOwnerPrototype();
 
-        return $owner->exchangeArray($response['user']);
+        return $owner->exchangeArray($response);
     }
 
     /**

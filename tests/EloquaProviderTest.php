@@ -3,7 +3,6 @@ namespace Permiakov\OAuth2\Client\Test\Provider;
 
 use League\OAuth2\Client\Token\AccessToken;
 use Permiakov\OAuth2\Client\Provider\EloquaProvider;
-use Permiakov\OAuth2\Client\Provider\EloquaResourceOwner;
 use PHPUnit\Framework\TestCase;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
@@ -79,31 +78,30 @@ class EloquaProviderTest extends TestCase
 
     public function testCreateResourceOwner()
     {
+        $responseMock = array('somethinginside');
+
+        $prototypeMock = $this->getMockBuilder('Permiakov\OAuth2\Client\Provider\EloquaResourceOwner')
+            ->setMethods(array('exchangeArray'))
+            ->getMock();
+        $prototypeMock->expects(
+            $this->once()
+        )->method('exchangeArray')->with($responseMock)->willReturn($prototypeMock);
+
         $provider = $this->getMockBuilder('Permiakov\OAuth2\Client\Provider\EloquaProvider')
             ->setMethods(array('getEloquaResourceOwnerPrototype', 'createResourceOwner'))
             ->getMock();
-        $prototype = new EloquaResourceOwner();
-        $provider->expects($this->once())->method('getEloquaResourceOwnerPrototype')->willReturn($prototype);
+        $provider->expects($this->once())->method('getEloquaResourceOwnerPrototype')->willReturn($prototypeMock);
 
         $reflection = new \ReflectionClass('\Permiakov\OAuth2\Client\Provider\EloquaProvider');
         $method = $reflection->getMethod('createResourceOwner');
         $method->setAccessible(true);
 
         $this->assertEquals(
-            $prototype,
+            $prototypeMock,
             $method->invokeArgs(
                 $provider,
                 array(
-                    array(
-                        'user' => array(
-                            'id' => 123,
-                            'username' => 'login',
-                            'displayName' => 'nickname',
-                            'firstName' => 'name',
-                            'lastName' => 'lastname',
-                            'emailAddress' => 'email'
-                        )
-                    ),
+                    $responseMock,
                     new AccessToken(array('access_token' => 'xxx'))
                 )
             )
