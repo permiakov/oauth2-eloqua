@@ -13,6 +13,7 @@ class EloquaResourceOwner implements ResourceOwnerInterface
     protected $lastName;
     protected $emailAddress;
     protected $siteName;
+    protected $compositeId;
 
     /**
      * @return array
@@ -47,7 +48,7 @@ class EloquaResourceOwner implements ResourceOwnerInterface
         $this->setLastName($user['lastName']);
         $this->setEmailAddress($user['emailAddress']);
         $this->setSiteName($params['site']['name']);
-
+        $this->setCompositeId(sprintf('%s:%s', $this->getSiteName(), $this->getUserName()));
         return $this;
     }
 
@@ -162,6 +163,24 @@ class EloquaResourceOwner implements ResourceOwnerInterface
     public function setSiteName($siteName)
     {
         $this->siteName = $siteName;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompositeId()
+    {
+        return $this->compositeId;
+    }
+
+    /**
+     * @param mixed $compositeId
+     * @return EloquaResourceOwner
+     */
+    public function setCompositeId($compositeId)
+    {
+        $this->compositeId = $compositeId;
         return $this;
     }
 }
