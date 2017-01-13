@@ -76,6 +76,40 @@ class EloquaProviderTest extends TestCase
         $method->invokeArgs($provider, array($responseMock, $data));
     }
 
+    /**
+     * @param $statusCode
+     * @dataProvider statusCodesProvider
+     */
+    public function testCheckResponseShouldThrowExceptionWithResponseStatusCode($statusCode)
+    {
+        $responseMock = $this->getMockBuilder('Psr\Http\Message\ResponseInterface')
+            ->setMethods(array('getStatusCode'))->getMockForAbstractClass();
+        $responseMock->expects($this->once())
+            ->method('getStatusCode')
+            ->will($this->returnValue($statusCode));
+
+        $provider = $this->getProvider();
+        $reflection = new \ReflectionClass(get_class($provider));
+        $method = $reflection->getMethod('checkResponse');
+        $method->setAccessible(true);
+
+        $this->expectException(IdentityProviderException::class);
+
+        $method->invokeArgs($provider, array($responseMock, array()));
+    }
+
+    public function statusCodesProvider()
+    {
+        return array(
+            'Switching Protocols' => array(
+                101,
+            ),
+            'Bad Request'=> array(
+                400,
+            ),
+        );
+    }
+
     public function testCreateResourceOwner()
     {
         $responseMock = array('somethinginside');

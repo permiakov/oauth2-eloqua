@@ -62,14 +62,19 @@ class EloquaProvider extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-        if (isset($data['error'])) {
-            throw new IdentityProviderException(
-                sprintf(
+        $statusCode = $response->getStatusCode();
+        if (($statusCode < 200 || $statusCode >= 300) || isset($data['error'])) {
+            $message = 'Eloqua response error';
+            if (isset($data['error'])) {
+                $message = sprintf(
                     'Error: %s. Description: %s',
                     $data['error'],
                     $data['error_description']
-                ),
-                $response->getStatusCode(),
+                );
+            }
+            throw new IdentityProviderException(
+                $message,
+                $statusCode,
                 $response->getBody()
             );
         }
