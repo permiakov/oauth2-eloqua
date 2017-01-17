@@ -26,26 +26,24 @@ class EloquaResourceOwnerTest extends TestCase
                 'setLastName',
                 'setEmailAddress',
                 'setSiteName',
-                'setCompositeId',
                 'getSiteName',
                 'getUserName'
             ))
             ->getMock();
-        $mock->expects($this->once())->method('setId')->with(123);
+        $mock->expects($this->once())->method('setId')->with('sitename:username');
         $mock->expects($this->once())->method('setUserName')->with('login');
         $mock->expects($this->once())->method('setDisplayName')->with('nickname');
         $mock->expects($this->once())->method('setFirstName')->with('name');
         $mock->expects($this->once())->method('setLastName')->with('lastname');
         $mock->expects($this->once())->method('setEmailAddress')->with('email');
         $mock->expects($this->once())->method('setSiteName')->with('sitename');
-        $mock->expects($this->once())->method('setCompositeId')->with('sitename:username');
         $mock->expects($this->once())->method('getSiteName')->willReturn('sitename');
         $mock->expects($this->once())->method('getUserName')->willReturn('username');
 
         $mock->exchangeArray(
             array(
                 'user' => array(
-                    'id' => 123,
+                    'id' => 'sitename:username',
                     'username' => 'login',
                     'displayName' => 'nickname',
                     'firstName' => 'name',
@@ -70,7 +68,7 @@ class EloquaResourceOwnerTest extends TestCase
                 'getSiteName'
             ))
             ->getMock();
-        $mock->expects($this->once())->method('getId')->willReturn(123);
+        $mock->expects($this->once())->method('getId')->willReturn('sitename:username');
         $mock->expects($this->once())->method('getUserName')->willReturn('login');
         $mock->expects($this->once())->method('getDisplayName')->willReturn('nickname');
         $mock->expects($this->once())->method('getFirstName')->willReturn('name');
@@ -80,7 +78,7 @@ class EloquaResourceOwnerTest extends TestCase
 
         $this->assertEquals(array(
             'user' => array(
-                'id' => 123,
+                'id' => 'sitename:username',
                 'username' => 'login',
                 'displayName' => 'nickname',
                 'firstName' => 'name',
@@ -94,22 +92,20 @@ class EloquaResourceOwnerTest extends TestCase
     public function testGettersSetters()
     {
         $owner = new EloquaResourceOwner();
-        $owner->setId(1);
+        $owner->setId('sitename:username');
         $owner->setUserName('username');
         $owner->setDisplayName('nickname');
         $owner->setFirstName('name');
         $owner->setLastName('lastname');
         $owner->setEmailAddress('email');
         $owner->setSiteName('sitename');
-        $owner->setCompositeId('someid');
 
-        $this->assertEquals(1, $owner->getId());
+        $this->assertEquals('sitename:username', $owner->getId());
         $this->assertEquals('username', $owner->getUserName());
         $this->assertEquals('nickname', $owner->getDisplayName());
         $this->assertEquals('name', $owner->getFirstName());
         $this->assertEquals('lastname', $owner->getLastName());
         $this->assertEquals('email', $owner->getEmailAddress());
         $this->assertEquals('sitename', $owner->getSiteName());
-        $this->assertEquals('someid', $owner->getCompositeId());
     }
 }
